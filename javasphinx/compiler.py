@@ -35,15 +35,12 @@ class JavadocRestCompiler(object):
         self.member_headers = member_headers
 
     def __default_filter(self, node):
-        """Excludes private members and those tagged "@hide" / "@exclude" in their
+        """Excludes members tagged "@hide" / "@exclude" in their
         docblocks.
 
         """
 
         if not isinstance(node, javalang.tree.Declaration):
-            return False
-
-        if 'private' in node.modifiers:
             return False
 
         if isinstance(node, javalang.tree.Documented) and node.documentation:
