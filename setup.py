@@ -34,7 +34,7 @@ setup(
         "Topic :: Software Development :: Libraries"
         ],
     install_requires=[
-        "javalang>=0.10.1",
+        "javalang>=0.12.0",
         "lxml",
         "beautifulsoup4",
         "future",

@@ -26,6 +26,7 @@ import logging
 import sys
 import os
 import os.path
+import re
 
 from optparse import OptionParser
 
@@ -45,13 +46,17 @@ def find_source_files(input_path, excludes):
     directory.
 
     """
-
     java_files = []
 
     input_path = os.path.normpath(os.path.abspath(input_path))
 
     for dirpath, dirnames, filenames in os.walk(input_path):
         if is_excluded(dirpath, excludes):
+            del dirnames[:]
+            continue
+
+        # only document domain objects
+        if not dirpath.endswith("domain"):
             del dirnames[:]
             continue
 
@@ -192,6 +197,8 @@ def generate_from_source_file(doc_compiler, source_file, cache_dir):
     f.close()
 
     try:
+        # remove annotations from generics to workarround bug in javalang
+        source = re.sub('<@\S*','<', source)
         ast = javalang.parse.parse(source)
     except javalang.parser.JavaSyntaxError as e:
         util.error('Syntax error in %s: %s', source_file, format_syntax_error(e))
@@ -318,6 +325,7 @@ Note: By default this script will not overwrite already created files.""")
     rootpath, excludes = args[0], args[1:]
 
     input_paths = opts.includes
+
     input_paths.append(rootpath)
 
     if not opts.destdir:

@@ -36,9 +36,16 @@ class JavadocRestCompiler(object):
 
     def __default_filter(self, node):
         """Excludes members tagged "@hide" / "@exclude" in their
-        docblocks.
+        docblocks. Excludes constructors and methods as well.
 
         """
+        # do not document methods
+        if isinstance(node, javalang.tree.MethodDeclaration):
+            return False
+
+        # do not document constructors
+        if isinstance(node, javalang.tree.ConstructorDeclaration):
+            return False
 
         if not isinstance(node, javalang.tree.Declaration):
             return False
