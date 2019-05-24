@@ -199,7 +199,7 @@ def generate_from_source_file(doc_compiler, source_file, cache_dir):
     try:
         # remove annotations from generics to workarround bug in javalang
         source = re.sub('<@\S*','<', source)
-	source = re.sub('<@.*\)','<', source)
+        source = re.sub('<@.*\)','<', source)
         ast = javalang.parse.parse(source)
     except javalang.parser.JavaSyntaxError as e:
         util.error('Syntax error in %s: %s', source_file, format_syntax_error(e))
