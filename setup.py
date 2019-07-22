@@ -38,7 +38,7 @@ setup(
         "lxml",
         "beautifulsoup4",
         "future",
-        "docutils",
+        "docutils==0.14",
         "sphinx"
     ],
     entry_points={
